@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "WeaponManager.h"
 #include "GameFramework/Character.h"
 #include "WeaponSystemCharacter.generated.h"
 
@@ -67,6 +68,10 @@ public:
 	/** Projectile class to spawn */
 	UPROPERTY(EditDefaultsOnly, Category=Projectile)
 	TSubclassOf<class AWeaponSystemProjectile> ProjectileClass;
+
+	/** Weapon Manager Class to use*/
+	UPROPERTY(EditDefaultsOnly, Category = WeaponManager)
+	TSubclassOf<class AWeaponManager> WeaponManager;
 
 	/** Sound to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
