@@ -1,7 +1,7 @@
 // Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 
 #include "WeaponSystemCharacter.h"
-#include "WeaponSystemProjectile.h"
+#include "WeaponManager.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -19,6 +19,8 @@ DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
 AWeaponSystemCharacter::AWeaponSystemCharacter()
 {
+	WeaponManager = CreateDefaultSubobject<AWeaponManager>(FName("WeaponManager"));
+
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
 
@@ -80,6 +82,8 @@ AWeaponSystemCharacter::AWeaponSystemCharacter()
 	VR_MuzzleLocation->SetRelativeLocation(FVector(0.000004, 53.999992, 10.000000));
 	VR_MuzzleLocation->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));		// Counteract the rotation of the VR gun model.
 
+
+
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
 }
@@ -140,7 +144,20 @@ void AWeaponSystemCharacter::SetupPlayerInputComponent(class UInputComponent* Pl
 
 void AWeaponSystemCharacter::OnFire()
 {
-	WeaponManager->Fire();
+	UWorld* const World = GetWorld();
+	//if (WeaponManager != NULL)
+	//{
+
+	//	const FRotator SpawnRotation = GetControlRotation();
+	//	// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
+	//	const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
+	//	AWeaponManager* w = Cast<AWeaponManager>(WeaponManager);
+
+	//	if (w != NULL)
+	//	{
+	//		w->FireWeapon(SpawnLocation, SpawnRotation);
+	//	}
+	//}
 	//// try and fire a projectile
 	//if (ProjectileClass != NULL)
 	//{
