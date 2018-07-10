@@ -140,33 +140,34 @@ void AWeaponSystemCharacter::SetupPlayerInputComponent(class UInputComponent* Pl
 
 void AWeaponSystemCharacter::OnFire()
 {
-	// try and fire a projectile
-	if (ProjectileClass != NULL)
-	{
-		UWorld* const World = GetWorld();
-		if (World != NULL)
-		{
-			if (bUsingMotionControllers)
-			{
-				const FRotator SpawnRotation = VR_MuzzleLocation->GetComponentRotation();
-				const FVector SpawnLocation = VR_MuzzleLocation->GetComponentLocation();
-				World->SpawnActor<AWeaponSystemProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
-			}
-			else
-			{
-				const FRotator SpawnRotation = GetControlRotation();
-				// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-				const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
+	WeaponManager->Fire();
+	//// try and fire a projectile
+	//if (ProjectileClass != NULL)
+	//{
+	//	UWorld* const World = GetWorld();
+	//	if (World != NULL)
+	//	{
+	//		if (bUsingMotionControllers)
+	//		{
+	//			const FRotator SpawnRotation = VR_MuzzleLocation->GetComponentRotation();
+	//			const FVector SpawnLocation = VR_MuzzleLocation->GetComponentLocation();
+	//			World->SpawnActor<AWeaponSystemProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
+	//		}
+	//		else
+	//		{
+	//			const FRotator SpawnRotation = GetControlRotation();
+	//			// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
+	//			const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
 
-				//Set Spawn Collision Handling Override
-				FActorSpawnParameters ActorSpawnParams;
-				ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+	//			//Set Spawn Collision Handling Override
+	//			FActorSpawnParameters ActorSpawnParams;
+	//			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
-				// spawn the projectile at the muzzle
-				World->SpawnActor<AWeaponSystemProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
-			}
-		}
-	}
+	//			// spawn the projectile at the muzzle
+	//			World->SpawnActor<AWeaponSystemProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+	//		}
+	//	}
+	//}
 
 	// try and play the sound if specified
 	if (FireSound != NULL)
