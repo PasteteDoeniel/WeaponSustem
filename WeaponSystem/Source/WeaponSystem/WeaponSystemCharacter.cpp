@@ -1,7 +1,6 @@
 // Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 
 #include "WeaponSystemCharacter.h"
-//#include "WeaponManager.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -81,11 +80,13 @@ AWeaponSystemCharacter::AWeaponSystemCharacter()
 	VR_MuzzleLocation->SetRelativeLocation(FVector(0.000004, 53.999992, 10.000000));
 	VR_MuzzleLocation->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));		// Counteract the rotation of the VR gun model.
 
-	WeaponManager = CreateDefaultSubobject<UWeaponManager>(TEXT("WeaponManager"));
-	WeaponManager->SetupAttachment(RootComponent);
-
 	/*WeaponManager = CreateDefaultSubobject<UWeaponManager>(TEXT("WeaponManager"));
-	WeaponManager->setupAtachment(RootComponent);*/
+	WeaponManager->SetupAttachment(RootComponent);*/
+
+	WeaponManager = CreateDefaultSubobject<UWeaponManager>(TEXT("WeaponManager"));
+	//WeaponManager->setupAtachment(RootComponent);
+
+
 
 
 	// Uncomment the following line to turn motion controllers on by default:
@@ -112,6 +113,14 @@ void AWeaponSystemCharacter::BeginPlay()
 		Mesh1P->SetHiddenInGame(false, true);
 	}
 }
+
+void AWeaponSystemCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	WeaponManager = AActor::FindComponentByClass<UWeaponManager>();
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 // Input

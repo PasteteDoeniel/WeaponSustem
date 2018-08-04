@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Engine.h"
+#include "WeaponManager.h"
 #include "GameFramework/Character.h"
 #include "WeaponSystemCharacter.generated.h"
 
@@ -50,6 +51,8 @@ class AWeaponSystemCharacter : public ACharacter
 
 public:
 	AWeaponSystemCharacter();
+
+	virtual void PostInitializeComponents() override;
 
 protected:
 	virtual void BeginPlay();
