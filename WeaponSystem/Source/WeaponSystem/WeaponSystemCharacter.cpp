@@ -158,19 +158,16 @@ void AWeaponSystemCharacter::SetupPlayerInputComponent(class UInputComponent* Pl
 void AWeaponSystemCharacter::OnFire()
 {
 	UWorld* const World = GetWorld();
-	//if (WeaponManager != NULL)
-	//{
+	if (WeaponManager != NULL)
+	{
 
-	//	const FRotator SpawnRotation = GetControlRotation();
-	//	// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-	//	const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
-	//	AWeaponManager* w = Cast<AWeaponManager>(WeaponManager);
+		const FRotator SpawnRotation = GetControlRotation();
+		// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
+		const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
+		
+		WeaponManager->FireWeapon(SpawnLocation, SpawnRotation);
 
-	//	if (w != NULL)
-	//	{
-	//		w->FireWeapon(SpawnLocation, SpawnRotation);
-	//	}
-	//}
+	}
 	//// try and fire a projectile
 	//if (ProjectileClass != NULL)
 	//{
