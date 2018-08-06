@@ -22,12 +22,12 @@ enum class EProjectileTypeEnum : uint8
 	PE_Projectile UMETA(DisplayName = "Projectile"),
 };
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class WEAPONSYSTEM_API UWeaponManager : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
 	UWeaponManager();
 
@@ -37,11 +37,23 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
 		EProjectileTypeEnum ProjectileEnum;
 
-	//AssautRifle
+	//used to determine if weapon can fire
+	UPROPERTY()
+		bool canFire = true;
 
-	//Shotgun
+	//AssautRifle-Energy
+
+	FTimerHandle AssaultFireRateTimerHandle;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Shotgun)
-		float FShotgunSpread UMETA(DisplayName = "Shotgun Spread");
+		float FAssaultEnergyDamage UMETA(DisplayName = "Assault Energy Damage");
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Shotgun)
+		int FAssaultEnergyFireRate UMETA(DisplayName = "Assault Energy Fire rate");
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Shotgun)
+		float FAssaultEnergyFireRateTime UMETA(DisplayName = "Assault Energy Fire rate Time");
+
 
 	//Shotgun-Projectile
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Shotgun)
@@ -65,11 +77,13 @@ public:
 
 	//SniperRifle
 
+
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
@@ -78,5 +92,8 @@ public:
 
 	UFUNCTION()
 		void FireWeapon(FVector SpawnPoint, FRotator SpawnRotation);
-	
+
+	UFUNCTION()
+		void ResetFireRateTimer();
+
 };

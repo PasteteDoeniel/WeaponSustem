@@ -20,8 +20,11 @@ void UWeaponManager::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//Sets Firerate TimeVariable
+	FAssaultEnergyFireRateTime = 60.0f / FAssaultEnergyFireRate;
+
 	// ...
-	
+
 }
 
 
@@ -42,6 +45,26 @@ void UWeaponManager::FireWeapon(FVector SpawnPoint, FRotator SpawnRotation)
 		switch (WeaponEnum)
 		{
 		case EWeaponTypeEnum::WE_AssaultRifle:
+
+			if (canFire)
+			{
+				if (ProjectileClass != NULL)
+				{
+					UWorld* const World = GetWorld();
+					if (World != NULL)
+					{
+						//Set Spawn Collision Handling Override
+						FActorSpawnParameters ActorSpawnParams;
+						ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+
+						// spawn the projectile at the muzzle
+						World->SpawnActor<AWeaponSystemProjectile>(ProjectileClass, SpawnPoint, SpawnRotation, ActorSpawnParams);
+
+						//starts timer for firerate
+						World->GetTimerManager().SetTimer(AssaultFireRateTimerHandle, this, &UWeaponManager::ResetFireRateTimer, FAssaultEnergyFireRateTime, false);
+					}
+				}
+			}
 
 			break;
 
@@ -96,4 +119,10 @@ void UWeaponManager::FireWeapon(FVector SpawnPoint, FRotator SpawnRotation)
 
 		break;
 	}
+}
+
+
+void UWeaponManager::ResetFireRateTimer()
+{
+	canFire = true;
 }
